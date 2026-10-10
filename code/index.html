@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Electron App</title>
+    <!-- This links your HTML file to your styles.css file -->
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <!-- SCREEN 1 (Matches 1.png) -->
+    <div id="screen-1" class="app-screen">
+        <div class="screen-one-art" aria-hidden="true"></div>
+        <header class="brand">
+            <svg class="brand-tree" viewBox="0 0 180 180" aria-hidden="true">
+                <path class="tree-branch" d="M84 164C83 139 88 114 84 91 81 69 70 57 58 47M84 104C98 91 108 77 116 59M84 84C94 69 96 54 94 36M83 119C69 105 57 98 41 94M88 132C103 119 117 113 137 109M84 151C68 143 52 141 37 144"/>
+                <g class="tree-leaves">
+                    <ellipse cx="56" cy="45" rx="12" ry="5" transform="rotate(35 56 45)"/>
+                    <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(55 48 65)"/>
+                    <ellipse cx="69" cy="60" rx="10" ry="5" transform="rotate(-35 69 60)"/>
+                    <ellipse cx="93" cy="32" rx="11" ry="5" transform="rotate(-70 93 32)"/>
+                    <ellipse cx="104" cy="52" rx="11" ry="5" transform="rotate(-42 104 52)"/>
+                    <ellipse cx="117" cy="56" rx="11" ry="5" transform="rotate(-25 117 56)"/>
+                    <ellipse cx="124" cy="78" rx="12" ry="5" transform="rotate(-30 124 78)"/>
+                    <ellipse cx="42" cy="91" rx="11" ry="5" transform="rotate(20 42 91)"/>
+                    <ellipse cx="59" cy="104" rx="11" ry="5" transform="rotate(-28 59 104)"/>
+                    <ellipse cx="132" cy="108" rx="12" ry="5" transform="rotate(-15 132 108)"/>
+                    <ellipse cx="112" cy="119" rx="11" ry="5" transform="rotate(20 112 119)"/>
+                    <ellipse cx="37" cy="143" rx="12" ry="5" transform="rotate(-20 37 143)"/>
+                    <ellipse cx="55" cy="148" rx="10" ry="5" transform="rotate(15 55 148)"/>
+                </g>
+                <path class="tree-ground" d="M17 165c37-5 82-3 145 0"/>
+            </svg>
+            <div class="brand-copy">
+                <h1>Ergo <span>Grow</span></h1>
+                <p>Your very own desk buddy</p>
+            </div>
+        </header>
+
+        <main class="signup-card">
+            <h2>Make an account</h2>
+            <form class="signup-form">
+                <label class="visually-hidden" for="signup-username">Username</label>
+                <input id="signup-username" name="username" type="text" placeholder="Username" autocomplete="username">
+                <label class="visually-hidden" for="signup-password">Password</label>
+                <input id="signup-password" name="password" type="password" placeholder="Password" autocomplete="new-password">
+                <button class="create-account-button" type="button" onclick="goToScreen('screen-3')">Create account</button>
+                <p class="account-prompt">
+                    Have an account?
+                    <button type="button" onclick="goToScreen('screen2')">Log in</button>
+                </p>
+            </form>
+        </main>
+    </div>
+
+    <!-- SCREEN 2 (Matches 2.png) -->
+    <div id="screen2" class="app-screen hidden">
+        <header class="login-brand">
+            <svg class="login-tree" viewBox="0 0 180 180" aria-hidden="true">
+                <path class="login-tree-branch" d="M84 164C83 139 88 114 84 91 81 69 70 57 58 47M84 104C98 91 108 77 116 59M84 84C94 69 96 54 94 36M83 119C69 105 57 98 41 94M88 132C103 119 117 113 137 109M84 151C68 143 52 141 37 144"/>
+                <g class="login-tree-leaves">
+                    <ellipse cx="56" cy="45" rx="12" ry="5" transform="rotate(35 56 45)"/>
+                    <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(55 48 65)"/>
+                    <ellipse cx="69" cy="60" rx="10" ry="5" transform="rotate(-35 69 60)"/>
+                    <ellipse cx="93" cy="32" rx="11" ry="5" transform="rotate(-70 93 32)"/>
+                    <ellipse cx="104" cy="52" rx="11" ry="5" transform="rotate(-42 104 52)"/>
+                    <ellipse cx="117" cy="56" rx="11" ry="5" transform="rotate(-25 117 56)"/>
+                    <ellipse cx="124" cy="78" rx="12" ry="5" transform="rotate(-30 124 78)"/>
+                    <ellipse cx="42" cy="91" rx="11" ry="5" transform="rotate(20 42 91)"/>
+                    <ellipse cx="59" cy="104" rx="11" ry="5" transform="rotate(-28 59 104)"/>
+                    <ellipse cx="132" cy="108" rx="12" ry="5" transform="rotate(-15 132 108)"/>
+                    <ellipse cx="112" cy="119" rx="11" ry="5" transform="rotate(20 112 119)"/>
+                    <ellipse cx="37" cy="143" rx="12" ry="5" transform="rotate(-20 37 143)"/>
+                    <ellipse cx="55" cy="148" rx="10" ry="5" transform="rotate(15 55 148)"/>
+                </g>
+                <path class="login-tree-ground" d="M17 165c37-5 82-3 145 0"/>
+            </svg>
+            <h1>Ergo <span>Grow</span></h1>
+        </header>
+
+        <main class="login-card">
+            <h2>Log in</h2>
+            <form class="login-form">
+                <label class="visually-hidden" for="login-username">Username</label>
+                <input id="login-username" name="username" type="text" placeholder="Username" autocomplete="username">
+                <label class="visually-hidden" for="login-password">Password</label>
+                <input id="login-password" name="password" type="password" placeholder="Password" autocomplete="current-password">
+                <button type="button" onclick="goToScreen('screen-3')">Log in</button>
+            </form>
+        </main>
+    </div>
+
+    <!-- SCREEN 3 (Matches 3.png) -->
+    <div id="screen-3" class="app-screen hidden">
+        <main class="wellness-screen">
+            <svg class="wellness-tree" viewBox="0 0 180 180" aria-hidden="true">
+                <path class="wellness-tree-branch" d="M84 164C83 139 88 114 84 91 81 69 70 57 58 47M84 104C98 91 108 77 116 59M84 84C94 69 96 54 94 36M83 119C69 105 57 98 41 94M88 132C103 119 117 113 137 109M84 151C68 143 52 141 37 144"/>
+                <g class="wellness-tree-leaves">
+                    <ellipse cx="56" cy="45" rx="12" ry="5" transform="rotate(35 56 45)"/>
+                    <ellipse cx="48" cy="65" rx="11" ry="5" transform="rotate(55 48 65)"/>
+                    <ellipse cx="69" cy="60" rx="10" ry="5" transform="rotate(-35 69 60)"/>
+                    <ellipse cx="93" cy="32" rx="11" ry="5" transform="rotate(-70 93 32)"/>
+                    <ellipse cx="104" cy="52" rx="11" ry="5" transform="rotate(-42 104 52)"/>
+                    <ellipse cx="117" cy="56" rx="11" ry="5" transform="rotate(-25 117 56)"/>
+                    <ellipse cx="124" cy="78" rx="12" ry="5" transform="rotate(-30 124 78)"/>
+                    <ellipse cx="42" cy="91" rx="11" ry="5" transform="rotate(20 42 91)"/>
+                    <ellipse cx="59" cy="104" rx="11" ry="5" transform="rotate(-28 59 104)"/>
+                    <ellipse cx="132" cy="108" rx="12" ry="5" transform="rotate(-15 132 108)"/>
+                    <ellipse cx="112" cy="119" rx="11" ry="5" transform="rotate(20 112 119)"/>
+                    <ellipse cx="37" cy="143" rx="12" ry="5" transform="rotate(-20 37 143)"/>
+                    <ellipse cx="55" cy="148" rx="10" ry="5" transform="rotate(15 55 148)"/>
+                </g>
+                <path class="wellness-tree-ground" d="M17 165c37-5 82-3 145 0"/>
+            </svg>
+            <header class="wellness-intro">
+                <p>Tell us what you experience. We’ll send you gentle, timed reminders to help your body feel its best.</p>
+            </header>
+            <section class="wellness-content" aria-label="Choose your wellness focus areas">
+                <div class="wellness-options">
+                    <label class="wellness-option">
+                        <span>Eye Strain</span>
+                        <input type="checkbox" name="wellness-focus" value="eye-strain" aria-label="Eye Strain">
+                    </label>
+                    <label class="wellness-option">
+                        <span>Neck Tension</span>
+                        <input type="checkbox" name="wellness-focus" value="neck-tension" aria-label="Neck Tension">
+                    </label>
+                    <label class="wellness-option">
+                        <span>Back &amp; Posture</span>
+                        <input type="checkbox" name="wellness-focus" value="back-posture" aria-label="Back & Posture">
+                    </label>
+                    <label class="wellness-option">
+                        <span>Wrist &amp;<br>Hand Tension</span>
+                        <input type="checkbox" name="wellness-focus" value="wrist-hand-tension" aria-label="Wrist and Hand Tension">
+                    </label>
+                    <label class="wellness-option">
+                        <span>Hip tightness</span>
+                        <input type="checkbox" name="wellness-focus" value="hip-tightness" aria-label="Hip tightness">
+                    </label>
+                    <label class="wellness-option">
+                        <span>Tension Headaches</span>
+                        <input type="checkbox" name="wellness-focus" value="tension-headaches" aria-label="Tension Headaches">
+                    </label>
+                </div>
+                <p id="wellness-guidance" class="wellness-guidance" aria-live="polite">Select at least one to continue</p>
+                <button class="wellness-start-button" type="button" onclick="startWellnessPlan()">Start My Wellness Plan</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- The JavaScript engine that switches between your slides smoothly -->
+    <script>
+        function goToScreen(screenId) {
+            // Hide all screens first
+            document.querySelectorAll('.app-screen').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            // Show the exact screen you clicked to see
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function startWellnessPlan() {
+            const selectedFocusAreas = document.querySelectorAll('input[name="wellness-focus"]:checked');
+            const guidance = document.getElementById('wellness-guidance');
+
+            if (selectedFocusAreas.length === 0) {
+                guidance.textContent = 'Select at least one to continue';
+                document.querySelector('input[name="wellness-focus"]').focus();
+                return;
+            }
+
+            guidance.textContent = 'Your wellness plan is ready to start.';
+        }
+    </script>
+</body>
+</html>
