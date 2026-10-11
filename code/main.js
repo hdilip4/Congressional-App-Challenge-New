@@ -16,6 +16,7 @@ function createWindow() {
 
   // This loads your HTML file into the window
   mainWindow.loadFile('index.html');
+ 
 }
 
 app.whenReady().then(() => {

@@ -79,27 +79,27 @@ Have an account?
 <div class="wellness-options">
 <label class="wellness-option">
 <span>Eye Strain</span>
-<input type="checkbox" name="wellness-focus" value="eye-strain" aria-label="Eye Strain">
+<input type="checkbox" name="wellness-focus" value="Eye Strain" aria-label="Eye Strain">
 </label>
 <label class="wellness-option">
 <span>Neck Tension</span>
-<input type="checkbox" name="wellness-focus" value="neck-tension" aria-label="Neck Tension">
+<input type="checkbox" name="wellness-focus" value="Neck Tension" aria-label="Neck Tension">
 </label>
 <label class="wellness-option">
 <span>Back &amp; Posture</span>
-<input type="checkbox" name="wellness-focus" value="back-posture" aria-label="Back &amp; Posture">
+<input type="checkbox" name="wellness-focus" value="Back & Posture" aria-label="Back &amp; Posture">
 </label>
 <label class="wellness-option">
 <span>Wrist &amp; <br>Hand Tension</span>
-<input type="checkbox" name="wellness-focus" value="wrist-hand-tension" aria-label="Wrist and Hand Tension">
+<input type="checkbox" name="wellness-focus" value="Wrist & Hand Tension" aria-label="Wrist and Hand Tension">
 </label>
 <label class="wellness-option">
 <span>Hip tightness</span>
-<input type="checkbox" name="wellness-focus" value="hip-tightness" aria-label="Hip tightness">
+<input type="checkbox" name="wellness-focus" value="Hip tightness" aria-label="Hip tightness">
 </label>
 <label class="wellness-option">
 <span>Tension Headaches</span>
-<input type="checkbox" name="wellness-focus" value="tension-headaches" aria-label="Tension Headaches">
+<input type="checkbox" name="wellness-focus" value="Tension Headaches" aria-label="Tension Headaches">
 </label>
 </div>
 <p id="wellness-guidance" class="wellness-guidance" aria-live="polite">Select at least one to continue</p>
@@ -119,8 +119,11 @@ Have an account?
 <!-- JavaScript engine -->
 <script>
 const { createClient } = require('@supabase/supabase-js');
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+// Direct Supabase Connection
+const supabaseUrl = 'https://ktsljnfeazyjxadijaxs.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt0c2xqbmZlYXp5anhhZGlqYXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2Mzk4NDIsImV4cCI6MjEwNzIxNTg0Mn0.llkQzNdnlL1seCsbytjV8Pxl1-5oCBZNpMQni3hOGlE'; // Replace with your real Supabase anon key
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 function showModal(message) {
@@ -141,25 +144,34 @@ async function handleSignUp() {
     return;
   }
 
-  const email = username + '@ergogrow.com';
+  if (password.length < 6) {
+    showModal('Your password is a bit too short. Make sure it is at least 6 characters long.');
+    return;
+  }
 
-  const { data, error } = await supabase.auth.signUp({
+  const email = username.toLowerCase() + '@ergogrow.com';
+
+  // Try signing up first
+  let { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
   });
 
+  // If sign up fails for any reason (rate limit, existing user, etc.), automatically attempt login!
   if (error) {
-    let friendlyMessage = 'Oops! Something went wrong. Please try again.';
-    if (error.message.includes('rate limit')) {
-      friendlyMessage = 'You have tried signing up a few too many times quickly. Please wait a moment and try again!';
-    } else if (error.message.includes('already registered')) {
-      friendlyMessage = 'That username is already taken. Try logging in or pick a different one!';
-    } else if (error.message.includes('Password should be')) {
-      friendlyMessage = 'Your password is a bit too short. Make sure it is at least 6 characters long.';
-    }
-    showModal(friendlyMessage);
+    console.log('Sign-up failed, attempting auto-login fallback...');
+    const loginResult = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    error = loginResult.error;
+    data = loginResult.data;
+  }
+
+  if (error) {
+    showModal('Supabase Error: ' + error.message); // This will show the exact reason on your screen
+    console.error('Auth error:', error.message);
   } else {
-    // Seamless flow: straight to the preferences screen!
     goToScreen('screen-3');
   }
 }
@@ -173,7 +185,7 @@ async function handleLogin() {
     return;
   }
 
-  const email = username + '@ergogrow.com';
+  const email = username.toLowerCase() + '@ergogrow.com';
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
@@ -198,15 +210,40 @@ function goToScreen(screenId) {
   document.getElementById(screenId).classList.remove('hidden');
 }
 
-function startWellnessPlan() {
+async function startWellnessPlan() {
   const selectedFocusAreas = document.querySelectorAll('input[name="wellness-focus"]:checked');
   const guidance = document.getElementById('wellness-guidance');
+  
   if (selectedFocusAreas.length === 0) {
     guidance.textContent = 'Select at least one to continue';
     document.querySelector('input[name="wellness-focus"]').focus();
     return;
   }
-  guidance.textContent = 'Your wellness plan is ready to start.';
+
+  const symptomsArray = Array.from(selectedFocusAreas).map(input => input.value);
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    showModal('Please make an account or log in first.');
+    return;
+  }
+
+  const { error } = await supabase
+    .from('user_symptoms')
+    .upsert({ 
+      user_id: user.id, 
+      symptoms: symptomsArray,
+      updated_at: new Date()
+    }, { onConflict: 'user_id' });
+
+  if (error) {
+    showModal('Could not save your preferences. Please try again.');
+    console.error('Supabase error:', error.message);
+  } else {
+    guidance.textContent = 'Your wellness plan is ready to start.';
+    showModal('Success! Your notification preferences have been saved.');
+  }
 }
 </script>
 </body>
